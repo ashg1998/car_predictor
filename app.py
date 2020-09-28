@@ -28,15 +28,19 @@ def predict():
         Year = int(request.form['Year'])
         Present_Price = float(request.form['Present_Price'])
         Kms_Driven = int(request.form['Kms_Driven'])
-        Kms_Driven2=np.log(Kms_Driven)
+        
         Owner = int(request.form['Owner'])
         Fuel_type_Petrol = request.form['Fuel_Type_Petrol']
         if(Fuel_type_Petrol == 'Petrol'):
             Fuel_type_Petrol = 1
             Fuel_type_Diesel =0
-        else:
+        if(Fuel_type_Petrol == 'Diesel'):
             Fuel_type_Petrol =0
             Fuel_type_Diesel = 1
+        if(Fuel_type_Petrol == 'CNG'):
+            Fuel_type_Petrol =0
+            Fuel_type_Diesel =0
+            
             
         Year = 2020-Year
         Seller_Type_Individual = request.form['Seller_Type_Individual']
@@ -49,7 +53,7 @@ def predict():
             Transmission_Mannual =1
         else:
             Transmission_Mannual =0
-        prediction = model.predict([[Present_Price,Kms_Driven2,Owner,Year,Fuel_type_Diesel,Fuel_type_Petrol,Seller_Type_Individual,Transmission_Mannual]])
+        prediction = model.predict([[Present_Price,Kms_Driven,Owner,Year,Fuel_type_Diesel,Fuel_type_Petrol,Seller_Type_Individual,Transmission_Mannual]])
         output = round(prediction[0],2)
         if output<0:
             return render_template('index.html',prediction_texts="Sorry you cannot sell this car")
